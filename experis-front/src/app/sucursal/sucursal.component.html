@@ -1,0 +1,73 @@
+<div class="container mt-5 margen1">
+    <button type="button" (click)="obtenerValorOpcion($event)" value='Registrar' class="btn btn-primary margen"
+      data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+      Registrar Producto</button>
+    <table id="tbSucursal" class="table-responsive table table-hover">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th scope="col">Nombre</th>
+          <th id="Actualizar"></th>
+          <th id="Eliminar"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sucursal of listaSucursal">
+          <td>{{sucursal.cod_sucursal}}</td>
+          <td>{{sucursal.nombre}}</td>
+          <td><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+              (click)="obtenerSeleccion(sucursal.cod_sucursal)">Actualizar</button></td>
+          <td><button type="button" class="btn btn-danger" (click) ="eliminarSucursal(sucursal)">Eliminar</button></td>
+  
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <ul class="nav nav-tabs col-sm-12" *ngIf="btnSumbit=='Registrar'">
+          <a class="nav-link col-sm-6 text-center " (click)="tipoRegistroSucursal('I')">REGISTRO INDIVIDUAL</a>
+          <a class="nav-link col-sm-6 text-center" (click)="tipoRegistroSucursal('M')">REGISTRO MASIVO</a>
+        </ul>
+        <ul class="nav nav-tabs col-sm-12" *ngIf="btnSumbit=='Actualizar'">
+          <a class="nav-link col-sm-12 text-center">ACTUALIZACIÓN SUCURSAL</a>
+        </ul>
+        <div class="modal-body">
+          <form [formGroup]="formSucursal" (ngSubmit)='verificarDatos()' *ngIf="parametro=='I'" enctype= "multipart/form-data">
+            <div class="mb-3 row">
+              <label for="nombre" class="col-sm-5 col-form-label">Nombre del Sucursal</label>
+              <div class="col-sm-7">
+                <input formControlName="nombre" id="nombre" [(ngModel)]="sucursal.nombre"
+                  placeholder="NOMBRE DEL SUCURSAL" /><br>
+                <small class="text-danger" *ngIf="validaCampos('nombre')">El campo debe tener un valor</small>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="CerrarI" class="btn btn-secondary" (click)="limpiarCampos()"
+                data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" value="Registrar"
+                class="btn btn-primary">{{btnSumbit}}</button>
+            </div>
+          </form>
+          <form *ngIf="parametro=='M'"  enctype= "multipart/form-data">
+            <div class="form-group d-flex justify-content-center mb-5">
+              <label className="btn btn-info d">
+                <img  id="browser" class="w-50" [src]="excelIcon" />
+                <input type="file" style="display: none" />
+              </label>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="CerrarM" class="btn btn-secondary" (click)="limpiarCampos()"
+                data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" value="Registrar"
+                class="btn btn-primary">{{btnSumbit}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
